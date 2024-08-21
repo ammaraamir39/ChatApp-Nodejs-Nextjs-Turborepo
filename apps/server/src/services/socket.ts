@@ -1,16 +1,17 @@
 import { Redis } from "ioredis"
 import { Server } from "socket.io"
 
+console.log(process.env.REDIS_HOST)
 const pub = new Redis({
-  username: "default",
-  host: "redis-10615.c14.us-east-1-2.ec2.redns.redis-cloud.com",
-  password: "iYNPwj8K0AEdm09jYgKqKtkYXZiNlkKC",
+  username: "",
+  host: "",
+  password: "",
   port: 10615
 })
 const sub = new Redis({
-  username: "default",
-  host: "redis-10615.c14.us-east-1-2.ec2.redns.redis-cloud.com",
-  password: "iYNPwj8K0AEdm09jYgKqKtkYXZiNlkKC",
+  username: "",
+  host: "",
+  password: "",
   port: 10615
 })
 class SocketService {
