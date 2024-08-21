@@ -1,99 +1,89 @@
-import Image from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+"use client"
 
-export default function Home() {
+import { useState, CSSProperties } from "react"
+import { useSocket } from "../context/SocketProvider"
+
+export default function Page() {
+  const { sendMessage, messages } = useSocket()
+
+  const [message, setMessage] = useState("")
+  console.log("message = > ", message)
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <div style={styles.pageContainer}>
+      <div style={styles.chatbox}>
+        <div style={styles.chatWindow}>
+          {messages.map((message) => (
+            <div style={styles.message}>{message}</div>
+          ))}
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file-text.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        <div style={styles.inputContainer}>
+          <input
+            style={styles.input}
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type a message..."
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <button
+            style={styles.sendButton}
+            onClick={(e) => sendMessage(message)}
+          >
+            Send
+          </button>
+        </div>
+      </div>
     </div>
-  );
+  )
+}
+
+const styles: { [key: string]: CSSProperties } = {
+  pageContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+    backgroundColor: "#f5f5f5"
+  },
+  chatbox: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    height: "80vh", // Increased the height of the chatbox
+    width: "500px",
+    border: "1px solid #ccc",
+    borderRadius: "8px",
+    backgroundColor: "#fff",
+    padding: "20px", // Added equal padding around the chatbox
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" // Added a subtle shadow for better visual appearance
+  },
+  chatWindow: {
+    flex: 1,
+    overflowY: "auto",
+    marginBottom: "10px"
+  },
+  message: {
+    padding: "10px",
+    margin: "5px 0",
+    backgroundColor: "#f1f1f1",
+    borderRadius: "4px"
+  },
+  inputContainer: {
+    display: "flex",
+    borderTop: "1px solid #ccc"
+  },
+  input: {
+    flex: 1,
+    padding: "10px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    marginRight: "10px"
+  },
+  sendButton: {
+    padding: "10px 15px",
+    borderRadius: "4px",
+    border: "none",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    cursor: "pointer"
+  }
 }
